@@ -1,3 +1,3 @@
-<!doctype html><body style="margin:0;background:transparent"><div id="h" style="width:540px;height:720px"></div><script type="module">
-import {mount} from '../assets/js/bottle3d.js';const p=+new URLSearchParams(location.search).get('p');
-mount(document.getElementById('h'),'../assets/img/studio-256.hdr',{still:p}).then(()=>document.title='ready').catch(e=>document.title='err '+e);</script>
+<!doctype html><body style="margin:0;background:#140306"><div id="h"></div><script type="module">
+import {mount} from '../assets/js/bottle3d.js';const q=new URLSearchParams(location.search),w=+q.get('w'),h=+q.get('h');const el=document.getElementById('h');el.style.width=w+'px';el.style.height=h+'px';
+mount(el,'../assets/img/studio-256.hdr',{still:+q.get('p'),t:q.get('t')?+q.get('t'):null,w,h}).then(()=>document.title='ready').catch(e=>document.title='err '+e);</script>
