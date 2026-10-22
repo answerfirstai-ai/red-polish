@@ -23,7 +23,7 @@ LD={"@context":"https://schema.org","@type":"NailSalon","@id":SITE+"#salon","nam
  "description":C['about']['value'],
  "address":{"@type":"PostalAddress","streetAddress":"3324 W 6th St, Suite F","addressLocality":"Los Angeles","addressRegion":"CA","postalCode":"90020","addressCountry":"US"},
  "geo":{"@type":"GeoCoordinates","latitude":34.0632103,"longitude":-118.2949821},"hasMap":MAPS,"areaServed":"Koreatown, Los Angeles",
- "sameAs":[FRESHA],"potentialAction":{"@type":"ReserveAction","target":FRESHA},"priceRange":"$$"}
+ "sameAs":[FRESHA],"potentialAction":{"@type":"ReserveAction","target":FRESHA},"priceRange":"$$","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":d,"opens":o,"closes":c} for d,o,c in [(["Monday"],"10:00","18:00"),(["Tuesday"],"10:00","19:00"),(["Wednesday","Thursday","Friday","Saturday"],"10:00","20:00"),(["Sunday"],"10:00","19:00")]]}
 def page(path,title,desc,body,extra_ld=None,cur=''):
   can=SITE+path
   ld=[LD]+([extra_ld] if extra_ld else [])
@@ -41,9 +41,9 @@ def page(path,title,desc,body,extra_ld=None,cur=''):
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="nav"><div class="wrap"><a class="wordmark" href="{B}" aria-label="Red Polish home"><i></i>Red Polish</a><nav aria-label="Main"><ul>{nav}</ul></nav>{bookbtn("Book on Fresha","btn btn-primary btn-sm","nav")}</div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap"><div><a class="wordmark" href="{B}"><i></i>Red Polish</a><p>Gel nails, extensions and nail art in Koreatown, Los Angeles.</p><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","footer")}</p></div>
+<footer><div class="wrap"><div><a class="wordmark" href="{B}"><i></i>Red Polish</a><p>Gel extensions and nail art in Koreatown, Los Angeles. Asian-owned, women-owned.</p><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","footer")}</p></div>
 <div><h3>Visit</h3><address class="nap" style="font-size:.95rem;margin:0">Red Polish<br>3324 W 6th St, Suite F<br>Los Angeles, CA 90020<br><a href="{TEL}">{PHONE}</a></address><p><a href="{DIR}" target="_blank" rel="noopener">Get directions</a></p></div>
-<div><h3>Hours</h3><p><span class="need">[NEED: hours, Google and Fresha differ]</span></p><p>Mon 10–6 (both sources)<br>Tue–Sun: open 10 AM, closing 7 or 8 PM. <a href="{B}visit/#hours">See both</a></p></div>
+<div><h3>Hours</h3><p>Mon 10–6<br>Tue 10–7<br>Wed–Sat 10–8<br>Sun 10–7</p></div>
 <p class="fine">Photos: Red Polish via Fresha. Prices from Red Polish's Fresha menu (October 2026) and may change. Confirm at booking. © 2026 Red Polish.</p></div></footer>
 <div class="mbar" aria-label="Quick actions">{bookbtn("Book","btn btn-primary btn-sm","mbar")}<a class="btn btn-ghost btn-sm" href="{TEL}">{I("call")}Call</a></div>
 <div class="toast" role="status" aria-live="polite"></div>
@@ -54,11 +54,11 @@ def img(i,alt,sizes,cls='',lazy=True,w=1200):
   return f'<img src="{B}assets/img/set-{i}-1200.webp" srcset="{B}assets/img/set-{i}-640.webp 640w, {B}assets/img/set-{i}-1200.webp 1200w" sizes="{sizes}" width="1200" height="675" alt="{html.escape(alt)}"{" loading=\"lazy\" decoding=\"async\"" if lazy else " fetchpriority=\"high\""}{" class=\""+cls+"\"" if cls else ""}>'
 SV={s['name']:s for s in C['services']}
 def svc(n): return SV[n]
-FEAT=[('Gel Manicure','Shaping, cuticle care, hand massage with organic lotion, chip-resistant gel.'),('Gel Manicure - Design','Your gel mani with nail art.'),
- ('Gel X (Short $75 / Medium $85 / Long $95)','Gel extensions. Short $75, medium $85, long $95.'),('Gel X with nail art','Add art to your Gel X set.'),('Gel Pedicure','Sea salt soak, mask, cuticle care, exfoliation, massage.'),
- ('Gel mani - French tip','Classic French in gel.'),('Gel Mani & Gel Pedi Combo (sale, same visit)','Hands and feet, same visit.'),('Regular Pedicure','The full pedicure ritual with regular polish.')]
+FEAT=[('Gel Manicure','from $50','Shaping, cuticle care, hand massage with organic lotion, chip-resistant gel.','1 hr 5 min'),('Gel Manicure – Design','from $51','Your gel mani with nail art.','1 hr 30 min'),
+ ('Gel Pedicure','from $60','Sea salt soak, mask, cuticle care, exfoliation, massage.','1 hr'),('Regular Pedicure','from $40','The full pedicure ritual with regular polish.','45 min'),
+ ('GelX extensions','See Fresha','Gel extensions, a Red Polish specialty. Current price on Fresha.','Short · medium · long'),('Add-ons','from $5','Removals, fixes and extras.','15–30 min')]
 def short(n): return n.split(' (')[0] if n.startswith('Gel X (') or 'Combo' in n else n
-cards=''.join(f'<article class="card"><span class="dur">{svc(n)["duration"]}</span><h3>{html.escape(short(n))}</h3><p>{d}</p><div class="price">{svc(n)["price"]}</div></article>' for n,d in FEAT)
+cards=''.join(f'<a class="card" style="text-decoration:none" href="{BOOK}&amp;utm_content=shelf-{k}" target="_blank" rel="noopener"><span class="dur">{du}</span><h3>{html.escape(n)}</h3><p>{d}</p><div class="price"{" style=\'font-size:1.5rem\'" if pr.startswith("See") else ""}>{pr}</div></a>' for k,(n,pr,d,du) in enumerate(FEAT))
 pan=''
 for k,(i,t,s,f) in enumerate(SETS):
   pan+=f'<figure class="set"><div class="ph gloss"><span class="num">{k+1:02d} / 09</span>{img(i,f"Red Polish nail set: {t}, {s}","(max-width:820px) 78vw, 60vw")}</div><figcaption><b>{t}</b><span>{s}</span></figcaption></figure>'
@@ -84,7 +84,7 @@ home=f'''<section class="hero" aria-labelledby="h1"><svg class="stroke" viewBox=
 <div class="wrap"><div><p class="eyebrow h-in">Nail art · 3324 W 6th St, Koreatown</p><h1 id="h1"><span class="ln">Red</span><span class="ln"><em>Polish.</em></span></h1>
 <p class="sub h-in">Nail art in Koreatown. Pearls, chrome, cat-eye, hand-painted detail.</p>
 <div class="ctas h-in">{bookbtn(place="hero").replace('btn btn-primary','btn btn-primary js-fill')}{callbtn()}</div>
-<div class="chips h-in"><a class="chip" href="{MAPS}" target="_blank" rel="noopener"><b>4.4★</b> Google · 177 reviews</a><span class="chip">Book instantly on Fresha</span></div></div>
+<div class="chips h-in"><a class="chip" href="{MAPS}" target="_blank" rel="noopener"><b>4.4★</b> Google · 177 reviews</a><span class="chip">Asian-owned · women-owned</span><span class="chip">Book instantly on Fresha</span></div></div>
 <div class="frame gloss" id="heroframe">{img(3,"Silver pearl 3D stud nail art by Red Polish","(max-width:820px) 92vw, 460px",lazy=False)}<span class="tag">Set 01 · Pearl studs</span></div></div></section>
 <section class="pan" id="sets" aria-labelledby="sets-h"><div class="wrap sec-head"><div><p class="eyebrow">Chapter 1 · The sets</p><h2 id="sets-h">Ten tiny <em>canvases.</em></h2></div><p class="muted">Pick a look and bring it to your appointment. Every photo here is Red Polish's own work.</p></div>
 <div class="pan-track">{pan}</div><div class="wrap"><p class="credit">Photos: Red Polish via Fresha.</p></div></section>
@@ -97,7 +97,7 @@ home=f'''<section class="hero" aria-labelledby="h1"><svg class="stroke" viewBox=
 <div class="wrap"><p class="note">Prices from Fresha, October 2026. Prices may change, so confirm at booking.</p></div></section>
 <section class="sec salon" id="salon" aria-labelledby="salon-h"><div class="wrap"><div><div class="blind"><img src="{B}assets/img/storefront.webp" width="382" height="215" loading="lazy" alt="Red Polish storefront with the NAILS RED POLISH sign on W 6th St"><div class="bands" aria-hidden="true">{"<i></i>"*6}</div></div><p class="credit">Photos: Red Polish via Fresha.</p></div>
 <div><p class="eyebrow">The salon</p><h2 id="salon-h">On 6th, <em>in K-town.</em></h2><address class="nap">3324 W 6th St, Suite F<br>Los Angeles, CA 90020<br>Catalina Center, 6th &amp; Catalina</address>
-<p><span class="need">[NEED: parking details]</span> <span class="need">[NEED: hours, sources differ]</span></p><div class="ctas">{dirbtn()}{callbtn()}</div></div></div></section>
+<p>Mon 10–6 · Tue 10–7 · Wed–Sat 10–8 · Sun 10–7 <a href="{B}visit/#hours">Hours</a></p><p><span class="need">[NEED: parking details]</span></p><div class="ctas">{dirbtn()}{callbtn()}</div></div></div></section>
 <section class="book" id="book" aria-labelledby="book-h"><div class="wrap"><h2 id="book-h">Bring your <em>inspo.</em></h2><p>Book on Fresha in a minute, or call the salon.</p><div class="ctas">{bookbtn(place="book").replace("btn btn-primary","btn btn-white")}{callbtn()}{dirbtn()}</div></div></section>'''
 looks=''.join(f'<figure class="look" data-f="{f}" data-flip-id="l{i}"><div class="ph">{img(i,f"Red Polish nail set: {t}, {s}","(max-width:560px) 92vw, (max-width:900px) 46vw, 380px")}</div><figcaption><div><b>{t}</b><small>{s}</small></div><a class="btn btn-primary btn-sm look-btn" href="{BOOK}&amp;utm_content=look-{i}" target="_blank" rel="noopener" data-look="Red Polish look: {t} ({s})">Book this look<span class="sr"> (opens Fresha, copies the look name)</span></a></figcaption></figure>' for i,t,s,f in SETS)
 filt=''.join(f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k=="all" else "false"}">{v}</button>' for k,v in FILT)
@@ -117,18 +117,17 @@ assert len(used)==len(C['services']),(len(used),[s['name'] for s in C['services'
 notes=''.join(f'<li>{html.escape(n)}</li>' for n in C['service_notes']['value'])
 services=f'''<section class="page-hero"><div class="wrap"><p class="eyebrow">Services &amp; prices</p><h1>The <em>menu.</em></h1><p>All {len(C['services'])} services from Red Polish's Fresha menu, with times. Prices may change, so confirm the final price when you book.</p><div class="ctas">{bookbtn(place="services-top")}{callbtn()}</div></div></section>
 <div class="wrap"><div class="menu">{secs}<section class="incl"><h2>What's included</h2><ul>{notes}</ul><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","services-incl")}</p></section></div>
-<p class="note" style="padding-bottom:4rem">Source: Red Polish on Fresha, menu read October 2026. Prices and times may change. <span class="need">[NEED: owner to confirm current menu]</span></p></div>'''
-HF=C['hours_fresha']['value']
-rows=''.join(f'<tr class="{"diff" if d in ("Tue","Sun") else ""}"><th scope="row">{d}</th><td>{HF[d].replace("-","–")}</td><td>{"10–6" if d=="Mon" else "10–8"}</td></tr>' for d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])
+<p class="note" style="padding-bottom:4rem">Source: Red Polish on Fresha, menu read October 2026. Prices and times may change. </p></div>'''
+HR=[('Monday','10 AM – 6 PM'),('Tuesday','10 AM – 7 PM'),('Wednesday','10 AM – 8 PM'),('Thursday','10 AM – 8 PM'),('Friday','10 AM – 8 PM'),('Saturday','10 AM – 8 PM'),('Sunday','10 AM – 7 PM')]
+rows=''.join(f'<tr><th scope="row">{d}</th><td>{h}</td></tr>' for d,h in HR)
 visit=f'''<section class="page-hero"><div class="wrap"><p class="eyebrow">Visit</p><h1>Find <em>us.</em></h1><address class="nap">Red Polish<br>3324 W 6th St, Suite F<br>Los Angeles, CA 90020 (Koreatown)<br>Catalina Center strip mall, 6th &amp; Catalina<br><a href="{TEL}">{PHONE}</a></address><div class="ctas">{dirbtn("btn btn-primary")}{callbtn()}{bookbtn("Book on Fresha","btn btn-ghost","visit")}</div></div></section>
-<section class="sec salon" style="padding-top:2rem"><div class="wrap"><div id="hours"><h2>Hours</h2><p><span class="need">[NEED: confirm hours, Fresha and Google differ on Tue and Sun]</span></p>
-<table class="hours"><thead><tr><th scope="col">Day</th><th scope="col">Fresha</th><th scope="col">Google</th></tr></thead><tbody>{rows}</tbody></table><p class="muted">Calling ahead? {PHONE}. Times are AM–PM.</p></div>
+<section class="sec salon" style="padding-top:2rem"><div class="wrap"><div id="hours"><h2>Hours</h2><table class="hours"><thead><tr><th scope="col">Day</th><th scope="col">Hours</th></tr></thead><tbody>{rows}</tbody></table><p class="muted">Hours from Red Polish on Fresha. Some Google listings show Tuesday and Sunday until 8 PM, so call {PHONE} if you are cutting it close.</p></div>
 <div><div class="blind"><img src="{B}assets/img/storefront.webp" width="382" height="215" loading="lazy" alt="Red Polish storefront with the NAILS RED POLISH sign"><div class="bands" aria-hidden="true">{"<i></i>"*6}</div></div><p class="credit">Photos: Red Polish via Fresha.</p>
 <h2 style="font-size:2rem;margin-top:2rem">Parking</h2><p><span class="need">[NEED: parking details from the salon]</span></p><p><a href="{MAPS}" target="_blank" rel="noopener">Open in Google Maps</a></p></div></div></section>'''
 nf=f'<section class="page-hero" style="min-height:70vh"><div class="wrap"><p class="eyebrow">404</p><h1>This page <em>chipped.</em></h1><p>We couldn\'t find that page. Try the home page or book straight away.</p><div class="ctas"><a class="btn btn-ghost" href="{B}">Back home</a>{bookbtn(place="404")}</div></div></section>'
 P=[('','Red Polish | Nail Art Salon in Koreatown, Los Angeles','Chrome, pearl, cat-eye and hand-painted nail art at 3324 W 6th St, Koreatown. Rated 4.4 on Google. Book online on Fresha or call (213) 387-1777.',home,''),
  ('gallery/','Nail Art Gallery | Red Polish, Koreatown LA','Real nail art sets from Red Polish in Koreatown: chrome, pearl studs, cat-eye, line art and hand-painted designs. Pick a look and book on Fresha.',gallery,'gallery/'),
- ('services/','Nail Services & Prices | Red Polish, Koreatown LA','Gel manicures from $50, gel pedicures from $60, Gel X from $75 and more. Full Red Polish menu with times. Book on Fresha or call (213) 387-1777.',services,'services/'),
+ ('services/','Nail Services & Prices | Red Polish, Koreatown LA','Gel manicures from $50, gel pedicures from $60, regular pedicures from $40, GelX and more. Full Red Polish menu with times. Book on Fresha or call (213) 387-1777.',services,'services/'),
  ('visit/','Visit Red Polish | 3324 W 6th St, Koreatown, Los Angeles','Find Red Polish at 3324 W 6th St, Suite F, Los Angeles, CA 90020 in Koreatown. Directions, hours and phone: (213) 387-1777.',visit,'visit/')]
 for p,t,d,b,cur in P:
   os.makedirs(R+p,exist_ok=True)
