@@ -386,3 +386,5 @@ footer{position:relative}
 @media(max-width:820px){.spec{margin-left:0}.spec .ctas,.spec .btn-row{flex-wrap:wrap}
 .tray .set{width:64vw}.tray .set:nth-child(even){margin-top:2.5rem}.tray .set.lead{width:80vw}.tray .set.lead .ph{aspect-ratio:4/5}}
 .gloss-line{height:4px;background:linear-gradient(90deg,#B5121B,#ff3b47 35%,#ffd6d9 50%,#ff3b47 65%,#B5121B);background-size:300% 100%}
+a[href^="tel:"]{white-space:nowrap}
+@media(max-width:820px){body{padding-bottom:0}footer{padding-bottom:calc(var(--pad,1.25rem) + 84px)}}
