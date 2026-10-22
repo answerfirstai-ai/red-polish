@@ -397,3 +397,7 @@ a[href^="tel:"]{white-space:nowrap}
 @media(min-width:1440px){.hero .ill{font-size:13px}}
 @media(max-width:820px){.hero .ill{top:80px;left:12px;right:auto;border-radius:4px;font-size:12px;padding:5px 8px}}
 @media(max-width:600px){.hero .ctas .btn-primary{display:none}.hero-inner{padding-bottom:calc(76px + 16px)}}
+
+/* rev6 QA */
+.u-macro{position:relative}
+.look-btn{max-width:100%;white-space:nowrap;overflow:visible}
