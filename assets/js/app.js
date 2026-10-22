@@ -20,16 +20,7 @@ mm.add({desk:'(min-width:821px)',mob:'(max-width:820px)',fine:'(pointer:fine)'},
   const seen=sessionStorage.getItem('rp-intro');const tl=gsap.timeline();
   if(!seen){tl.fromTo('.poster',{scale:1.08},{scale:1,duration:2.4,ease:'power2.out'},0).fromTo('.sweep',{xPercent:-100},{xPercent:100,duration:1.8,ease:'power2.inOut'},.4);
    const skip=()=>{tl.progress(1);['wheel','keydown','pointerdown','touchstart','scroll'].forEach(e=>removeEventListener(e,skip))};['wheel','keydown','pointerdown','touchstart','scroll'].forEach(e=>addEventListener(e,skip,{passive:true,once:true}));sessionStorage.setItem('rp-intro','1')}
-  let ctl=null,prog=0;const pt=ScrollTrigger.create({trigger:hero,start:'top top',end:'bottom top',scrub:true,onUpdate:s=>{prog=s.progress;ctl&&ctl(prog)}});
-  gsap.to('.hero-inner',{yPercent:-12,ease:'none',scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true}});
-  const gl=(()=>{try{return !!d.createElement('canvas').getContext('webgl2')}catch(e){return false}})();
-  const base=d.querySelector('script[src*="app.js"]').src.replace('js/app.js','');
-  const go=()=>{if(desk&&fine&&gl){import(base+'js/bottle3d.js').then(m=>m.mount(st,base+'img/studio-256.hdr')).then(b=>{ctl=v=>b.set(v);b.set(prog);st.classList.add('on');hero.classList.add('live')}).catch(()=>{})}
-   else{ // mobile: pre-rendered PBR sequence scrubbed by scroll
-    const im=st.querySelector('.seq'),N=24,ext=d.createElement('canvas').toDataURL('image/avif').indexOf('avif')>0?'avif':'webp',fr=[];
-    let ok=0;for(let i=0;i<N;i++){const x=new Image();x.decoding='async';x.onload=()=>{if(++ok===N){im.hidden=false;st.classList.add('on');hero.classList.add('live');ctl(prog)}};x.src=base+'seq/b'+String(i).padStart(2,'0')+'.'+ext;fr.push(x.src)}
-    let last=-1;ctl=v=>{const k=Math.round(v*(N-1));if(k!==last){last=k;im.src=fr[k]}}}};
-  ('requestIdleCallback' in window)?requestIdleCallback(go,{timeout:2500}):setTimeout(go,1200);
+  gsap.to('.poster',{scale:1.06,yPercent:4,ease:'none',scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true}});
  }
  // rack focus into their real set (scroll-linked, no pin)
  gsap.fromTo('.u-real img',{filter:'blur(12px)',scale:1.1},{filter:'blur(0px)',scale:1,ease:'none',scrollTrigger:{trigger:'.u-real',start:'top 95%',end:'top 35%',scrub:true}});
