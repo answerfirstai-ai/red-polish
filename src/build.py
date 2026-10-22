@@ -42,8 +42,8 @@ def page(path,title,desc,body,extra_ld=None,cur=''):
 <header class="nav"><div class="wrap"><a class="wordmark" href="{B}" aria-label="Red Polish home"><i></i>Red Polish</a><nav aria-label="Main"><ul>{nav}</ul><details class="mnav"><summary aria-label="Menu"><span></span>Menu</summary><div class="mpanel"><a href="{B}">Home</a>{nav.replace("<li>","").replace("</li>","")}<a href="{TEL}">Call {PHONE}</a></div></details></nav>{bookbtn("Book on Fresha","btn btn-primary btn-sm","nav")}</div></header>
 <main id="main">{body}</main>
 <footer><div class="wrap"><div><a class="wordmark" href="{B}"><i></i>Red Polish</a><p>Nail art in Koreatown, Los Angeles. Book on Fresha.</p><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","footer")}</p></div>
-<div><h3>Visit</h3><address class="nap" style="font-size:.95rem;margin:0">Red Polish<br>3324 W 6th St, Suite F<br>Los Angeles, CA 90020<br><a href="{TEL}">{PHONE}</a></address><p><a href="{DIR}" target="_blank" rel="noopener">Get directions</a></p></div>
-<div><h3>Hours</h3><p>Per Fresha: Mon 10-6, Tue 10-7, Wed-Sat 10-8, Sun 10-7. <a href="{TEL}">Call to confirm.</a></p></div>
+<div><h2 class="fh">Visit</h2><address class="nap" style="font-size:.95rem;margin:0">Red Polish<br>3324 W 6th St, Suite F<br>Los Angeles, CA 90020<br><a href="{TEL}">{PHONE}</a></address><p><a href="{DIR}" target="_blank" rel="noopener">Get directions</a></p></div>
+<div><h2 class="fh">Hours</h2><p>Per Fresha: Mon 10-6, Tue 10-7, Wed-Sat 10-8, Sun 10-7. <a href="{TEL}">Call to confirm.</a></p></div>
 <p class="fine">Nail-art and storefront photos: Photos from Red Polish's Fresha page. Scenes marked "Illustrative" are AI-generated atmosphere, not photos of Red Polish. Prices from Red Polish's Fresha menu (October 2026) and may change. Confirm at booking. © 2026 Red Polish.</p></div></footer>
 <div class="mbar" aria-label="Quick actions">{bookbtn("Book","btn btn-primary btn-sm","mbar")}<a class="btn btn-ghost btn-sm" href="{TEL}">{I("call")}Call</a></div>
 <div class="toast" role="status" aria-live="polite"></div>
