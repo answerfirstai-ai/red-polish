@@ -61,7 +61,7 @@ def svc(n): return SV[n]
 FEAT=[('Gel Manicure','from $50','Gel polish manicure'),('Gel Manicure Design','from $51','Gel manicure with nail art'),('Gel Pedicure','from $60','Gel polish pedicure'),('Regular Pedicure','from $40','Classic pedicure'),('Add-ons','$5 / from $10','Extras added to a service'),('GelX','See Fresha','Listed on Fresha. Price on the booking page')]
 def short(n): return n.split(' (')[0] if n.startswith('Gel X (') or 'Combo' in n else n
 cards=''
-tray=''.join(f'<figure class="set{" lead" if k==0 else ""}"><div class="ph">{img(i,salt(t),"(max-width:820px) 80vw, 60vw" if k==0 else "(max-width:820px) 64vw, 380px")}</div><figcaption><b>{t}</b></figcaption></figure>' for k,(i,t,f) in enumerate(SETS))
+tray=''.join(f'<figure class="set{" lead" if k==0 else ""}"><div class="ph">{img(i,salt(t),"(max-width:820px) 80vw, 60vw" if k==0 else ("(max-width:820px) 70vw, 420px" if k%3==0 else "(max-width:820px) 64vw, 380px"))}</div><figcaption><b>{t}</b></figcaption></figure>' for k,(i,t,f) in enumerate(SETS))
 NAIL='''<svg viewBox="0 0 200 320" role="img" aria-label="Illustrated almond nail changing finish"><defs>
 <clipPath id="nc"><path d="M100 8C150 8 182 60 182 140v120c0 32-22 52-82 52s-82-20-82-52V140C18 60 50 8 100 8Z"/></clipPath>
 <linearGradient id="gch" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6f9"/><stop offset=".35" stop-color="#9aa1ad"/><stop offset=".5" stop-color="#ffffff"/><stop offset=".7" stop-color="#7b828e"/><stop offset="1" stop-color="#dfe3e9"/></linearGradient>
