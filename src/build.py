@@ -18,9 +18,9 @@ def bookbtn(label='Book an appointment',cls='btn btn-primary',place='x'):
 def callbtn(cls='btn btn-ghost'): return f'<a class="{cls}" href="{TEL}">{I("call")}Call {PHONE}</a>'
 def dirbtn(cls='btn btn-ghost'): return f'<a class="{cls}" href="{DIR}" target="_blank" rel="noopener">{I("pin")}Directions</a>'
 UL='<svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><path d="M2 5 C 30 1, 60 8, 98 3"/></svg>'
-LD={"@context":"https://schema.org","@type":"NailSalon","@id":SITE+"#salon","name":"Red Polish","alternateName":["Red Polish Nail Salons","레드폴리쉬"],
+LD={"@context":"https://schema.org","@type":"NailSalon","@id":SITE+"#salon","name":"Red Polish","alternateName":"Red Polish Nail Salons",
  "url":SITE,"telephone":"+1-213-387-1777","image":SITE+"assets/img/icon-512.png","logo":SITE+"assets/img/icon-512.png",
- "description":C['about']['value'],
+ "description":"Nail salon in Koreatown, Los Angeles. Book on Fresha.",
  "address":{"@type":"PostalAddress","streetAddress":"3324 W 6th St, Suite F","addressLocality":"Los Angeles","addressRegion":"CA","postalCode":"90020","addressCountry":"US"},
  "geo":{"@type":"GeoCoordinates","latitude":34.0632103,"longitude":-118.2949821},"hasMap":MAPS,"areaServed":"Koreatown, Los Angeles",
  "sameAs":[FRESHA],"potentialAction":{"@type":"ReserveAction","target":FRESHA},"priceRange":"$$"}
@@ -41,7 +41,7 @@ def page(path,title,desc,body,extra_ld=None,cur=''):
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="nav"><div class="wrap"><a class="wordmark" href="{B}" aria-label="Red Polish home"><i></i>Red Polish</a><nav aria-label="Main"><ul>{nav}</ul><details class="mnav"><summary aria-label="Menu"><span></span>Menu</summary><div class="mpanel"><a href="{B}">Home</a>{nav.replace("<li>","").replace("</li>","")}<a href="{TEL}">Call {PHONE}</a></div></details></nav>{bookbtn("Book on Fresha","btn btn-primary btn-sm","nav")}</div></header>
 <main id="main">{body}</main>
-<footer><div class="wrap"><div><a class="wordmark" href="{B}"><i></i>Red Polish</a><p>Nail art in Koreatown, Los Angeles. Book on Fresha.</p><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","footer")}</p></div>
+<footer><div class="wrap"><div class="gloss-line" aria-hidden="true"></div><div><a class="wordmark" href="{B}"><i></i>Red Polish</a><p>Red Polish, 3324 W 6th St, Suite F, Los Angeles 90020. <a href="{TEL}">(213) 387-1777</a>.</p><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","footer")}</p></div>
 <div><h2 class="fh">Visit</h2><address class="nap" style="font-size:.95rem;margin:0">Red Polish<br>3324 W 6th St, Suite F<br>Los Angeles, CA 90020<br><a href="{TEL}">{PHONE}</a></address><p><a href="{DIR}" target="_blank" rel="noopener">Get directions</a></p></div>
 <div><h2 class="fh">Hours</h2><p>Per Fresha: Mon 10-6, Tue 10-7, Wed-Sat 10-8, Sun 10-7. <a href="{TEL}">Call to confirm.</a></p></div>
 <p class="fine">Nail-art and storefront photos: Photos from Red Polish's Fresha page. Scenes marked "Illustrative" are AI-generated atmosphere, not photos of Red Polish. Prices from Red Polish's Fresha menu (October 2026) and may change. Confirm at booking. © 2026 Red Polish.</p></div></footer>
@@ -57,7 +57,7 @@ def svc(n): return SV[n]
 FEAT=[('Gel Manicure','from $50','Gel polish manicure'),('Gel Manicure Design','from $51','Gel manicure with nail art'),('Gel Pedicure','from $60','Gel polish pedicure'),('Regular Pedicure','from $40','Classic pedicure'),('Add-ons','$5 / from $10','Extras added to a service'),('GelX','See Fresha','Listed on Fresha. Price on the booking page')]
 def short(n): return n.split(' (')[0] if n.startswith('Gel X (') or 'Combo' in n else n
 cards=''
-pan=''
+pan='';tray=''.join(f'<figure class="set{" lead" if k==0 else ""}"><div class="ph">{img(i,f"Real nail art by Red Polish: {t} {s}","(max-width:820px) 80vw, 40vw")}</div><figcaption><b>{t.rstrip('.')}, {s[0].lower()+s[1:]}</b></figcaption></figure>' for k,(i,t,s,f) in enumerate([x for x in SETS if x[0]!=3]))
 for k,(i,t,s,f) in enumerate(SETS):
   pan+=f'<figure class="set"><div class="ph"><span class="num">{k+1:02d} / 09</span>{img(i,f"Red Polish nail set: {t}, {s}","(max-width:820px) 78vw, 60vw")}</div><figcaption><b>{t}</b><span>{s}</span></figcaption></figure>'
   if k in (2,5): pan+=f'<div class="set-cta"><p>Like this one?</p><span>Save the photo and bring it to your appointment.</span>{bookbtn("Book this look","btn btn-white btn-sm",f"pan-{k+1}")}</div>'
@@ -80,25 +80,24 @@ REAL="Photos from Red Polish's Fresha page"
 home=f"""<section class="hero" aria-labelledby="h1"><div class="hero-media"><picture><source media="(max-width:820px)" type="image/avif" srcset="{B}assets/img/hero-m-800.avif 800w, {B}assets/img/hero-m-1200.avif 1200w, {B}assets/img/hero-m-1600.avif 1600w" sizes="100vw"><source media="(max-width:820px)" type="image/webp" srcset="{B}assets/img/hero-m-800.webp 800w, {B}assets/img/hero-m-1200.webp 1200w, {B}assets/img/hero-m-1600.webp 1600w" sizes="100vw"><source type="image/avif" srcset="{B}assets/img/hero-d-960.avif 960w, {B}assets/img/hero-d-1280.avif 1280w, {B}assets/img/hero-d-1920.avif 1920w, {B}assets/img/hero-d-2880.avif 2880w" sizes="100vw"><img class="poster" src="{B}assets/img/hero-d-1920.webp" srcset="{B}assets/img/hero-d-960.webp 960w, {B}assets/img/hero-d-1280.webp 1280w, {B}assets/img/hero-d-1920.webp 1920w, {B}assets/img/hero-d-2880.webp 2880w" sizes="100vw" width="2880" height="1620" alt="Illustrative scene: a faceted bottle of red lacquer with a chrome cap in a beam of light" fetchpriority="high"></picture>{ILL}</div>
 <div class="sweep" aria-hidden="true"></div>
 <div class="hero-inner"><p class="eyebrow">Nail art · Koreatown, Los Angeles</p><h1 id="h1"><span>Red</span><em>Polish.</em></h1>
-<div class="hero-side"><p class="sub">Nail art in Koreatown. Pearls, chrome, cat-eye and hand-painted detail, booked on Fresha.</p>
+<div class="hero-side"><p class="sub">Nail salon at 3324 W 6th St, Suite F, Koreatown. Gel, pedicures and nail art, booked on Fresha.</p>
 <div class="ctas">{bookbtn("Book on Fresha",place="hero")}{callbtn("btn btn-glass")}</div>
 </div>
-<nav class="jump" aria-label="On this page"><a href="#uncap">01 Uncap</a><a href="#sets">02 The sets</a><a href="#prices">03 Prices</a><a href="#salon">04 Visit</a></nav></div></section>
-<div class="brushband">{pic("ai-5-lacquer","Illustrative scene: glossy red lacquer","100vw")}<span class="ill" style="bottom:30%">Illustrative scene. Not a photo of Red Polish.</span></div>
-<section class="uncap" id="uncap" aria-labelledby="uncap-h"><div class="u-grid">
-<div class="u-copy"><p class="num">01</p><h2 id="uncap-h">The <em>uncap.</em></h2><p class="beats"><span>One coat.</span><span>One bead of gloss.</span><span>Nine tiny canvases.</span></p>{bookbtn("Book on Fresha","btn btn-primary btn-sm","uncap")}</div>
-<figure class="u-macro">{pic("ai-2-brush","Illustrative scene: a nail polish brush with a bead of red lacquer","(max-width:820px) 60vw, 28vw",w=768,h=768)}{ILL}</figure>
-<figure class="u-real"><div class="focus">{img(3,"Real nail art by Red Polish: silver pearl 3D studs","(max-width:820px) 100vw, 58vw")}</div><figcaption>Set 01 · Pearl studs <span>{REAL}</span></figcaption></figure></div></section>
-<section class="sets" id="sets" aria-labelledby="sets-h"><div class="mat" aria-hidden="true">{pic("ai-3-materials","","100vw")}</div><span class="ill ill-top">Background: illustrative scene. Not a photo of Red Polish.</span>
-<div class="sets-head"><p class="num">02</p><h2 id="sets-h">Nine tiny <em>canvases.</em></h2><p>Nine sets from their Fresha page. <a href="{B}gallery/">All nine in a grid</a>.</p></div>
-<div class="rail" tabindex="0" role="region" aria-label="Nail sets, scroll sideways">{pan}</div><p class="credit wrap">{REAL}</p></section>
-<section class="prices" id="prices" aria-labelledby="pr-h"><div class="pr-grid"><div class="pr-head"><p class="num">03</p><h2 id="pr-h">Gel manicures <em>from $50.</em></h2><p class="muted">"From" prices on Red Polish's Fresha menu, October 2026. Prices may change. Book on Fresha.</p>{bookbtn("See the full menu on Fresha","btn btn-primary btn-sm","prices")}</div>
-<ol class="plist prow">{''.join(f'<li><a href="{BOOK}&amp;utm_content=price-{k}" target="_blank" rel="noopener"><span class="pn">{html.escape(n)}</span><span class="pd">{d}</span><span class="pp">{pr}</span></a></li>' for k,(n,pr,d) in enumerate(FEAT))}</ol></div></section>
+</div></section>
+<section class="uncap" id="bead" aria-labelledby="bead-h"><div class="u-grid">
+<div class="u-copy"><h2 id="bead-h">Gel manicures <em>from $50</em></h2><p>From prices on Red Polish's Fresha menu, October 2026.</p>{bookbtn("Book on Fresha","btn btn-primary btn-sm","bead")}
+<figure class="u-macro">{pic("ai-2-brush","Illustrative scene. Not a photo of Red Polish. A nail polish brush with a bead of red lacquer.","(max-width:820px) 60vw, 26vw",w=768,h=768)}<span class="ill">Illustrative scene. Not a photo of Red Polish.</span></figure></div>
+<figure class="u-real"><div class="focus">{img(3,"Real nail art by Red Polish: silver pearl 3D studs","(max-width:820px) 100vw, 58vw")}</div><figcaption>Pearl, silver 3D studs <span>{REAL}</span></figcaption></figure></div></section>
+<section class="sets" id="sets" aria-labelledby="sets-h"><div class="sets-head"><h2 id="sets-h">Sets from Red Polish's <em>Fresha page</em></h2><p>Bring a photo of the look you want.</p></div>
+<div class="rail tray" tabindex="0" role="region" aria-label="Nail sets">{tray}</div><p class="credit wrap">{REAL}</p></section>
+<section class="prices" id="prices" aria-labelledby="pr-h"><div class="spec"><div class="spec-head"><h2 id="pr-h">Prices on <em>Fresha</em></h2><p>"From" prices on Red Polish's Fresha menu, October 2026. Prices may change.</p></div>
+<dl class="spec-list">{''.join(f'<div><dt>{html.escape(n)}</dt><dd>{"Listed, price on Fresha" if n=="GelX" else pr}</dd></div>' for n,pr,d in FEAT)}</dl>
+<div class="ctas">{bookbtn("Book on Fresha","btn btn-primary","prices")}{callbtn()}</div></div></section>
 <section class="salon" id="salon" aria-labelledby="salon-h"><div class="s-grid">
 <figure class="s-photo"><div class="push"><img src="{B}assets/img/storefront.webp" width="382" height="215" loading="lazy" alt="Real photo: Red Polish storefront with the NAILS RED POLISH sign"></div><figcaption>The real storefront · Photos from Red Polish's Fresha page</figcaption></figure>
-<div class="s-copy"><p class="num">04</p><h2 id="salon-h">3324 W 6th St, <em>Suite F.</em></h2><address class="nap">Los Angeles, CA 90020<br>Koreatown</address>
-<p><b>Hours per Fresha</b><br>Mon 10-6 · Tue 10-7 · Wed-Sat 10-8 · Sun 10-7<br><a href="{TEL}">Call (213) 387-1777 to confirm</a></p><p><span class="need">[NEED: parking details]</span></p><div class="ctas">{dirbtn("btn btn-glass")}{callbtn("btn btn-glass")}</div></div></div></section>
-<section class="book" id="book" aria-labelledby="book-h"><div class="book-bg" aria-hidden="true">{pic("ai-5-lacquer","","100vw")}</div>{ILL}<div class="b-inner"><h2 id="book-h">Book <em>the look.</em></h2><div><p>Bring a photo of the set you want. Book on Fresha or call the salon.</p><div class="ctas">{bookbtn("Book on Fresha","btn btn-white","book")}{callbtn("btn btn-glass")}</div></div></div></section>"""
+<div class="s-copy"><h2 id="salon-h">3324 W 6th St, <em>Suite F</em></h2><address class="nap">Los Angeles, CA 90020<br>Koreatown</address>
+<p>Hours per Fresha: Mon 10-6, Tue 10-7, Wed-Sat 10-8, Sun 10-7. <a href="{TEL}">Call to confirm.</a></p><p><span class="need">[NEED: parking details]</span></p><div class="ctas">{dirbtn("btn btn-glass")}{callbtn("btn btn-glass")}</div></div></div></section>
+<section class="book" id="book" aria-labelledby="book-h"><div class="b-inner"><h2 id="book-h">Book on <em>Fresha</em></h2><div><p>Bring a photo of the set you want, or call the salon.</p><div class="ctas">{bookbtn("Book on Fresha","btn btn-white","book")}{callbtn("btn btn-glass")}</div></div></div></section>"""
 looks=''.join(f'<figure class="look" data-f="{f}" data-flip-id="l{i}"><div class="ph">{img(i,f"Red Polish nail set: {t}, {s}","(max-width:560px) 92vw, (max-width:900px) 46vw, 380px")}</div><figcaption><div><b>{t}</b><small>{s}</small></div><a class="btn btn-primary btn-sm look-btn" href="{BOOK}&amp;utm_content=look-{i}" target="_blank" rel="noopener" data-look="Red Polish look: {t} ({s})">Book this look<span class="sr"> (opens Fresha, copies the look name)</span></a></figcaption></figure>' for i,t,s,f in SETS)
 filt=''.join(f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k=="all" else "false"}">{v}</button>' for k,v in FILT)
 gallery=f'''<section class="page-hero"><div class="wrap"><p class="eyebrow">Nail art gallery</p><h1>Pick a <em>look.</em></h1><p>Nine real sets from Red Polish. Real work by Red Polish. Tap "Book this look" and we copy its name so you can paste it in your Fresha booking note.</p><div class="filters" role="group" aria-label="Filter by finish">{filt}</div></div></section>
