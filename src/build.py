@@ -79,7 +79,7 @@ ILL='<span class="ill">Illustrative scene. Not a photo of Red Polish.</span>'
 REAL="Photos from Red Polish's Fresha page"
 home=f"""<section class="hero" aria-labelledby="h1"><div class="hero-media"><picture><source media="(max-width:820px)" type="image/avif" srcset="{B}assets/img/hero-m-800.avif 800w, {B}assets/img/hero-m-1200.avif 1200w, {B}assets/img/hero-m-1600.avif 1600w" sizes="100vw"><source media="(max-width:820px)" type="image/webp" srcset="{B}assets/img/hero-m-800.webp 800w, {B}assets/img/hero-m-1200.webp 1200w, {B}assets/img/hero-m-1600.webp 1600w" sizes="100vw"><source type="image/avif" srcset="{B}assets/img/hero-d-960.avif 960w, {B}assets/img/hero-d-1280.avif 1280w, {B}assets/img/hero-d-1920.avif 1920w, {B}assets/img/hero-d-2880.avif 2880w" sizes="100vw"><img class="poster" src="{B}assets/img/hero-d-1920.webp" srcset="{B}assets/img/hero-d-960.webp 960w, {B}assets/img/hero-d-1280.webp 1280w, {B}assets/img/hero-d-1920.webp 1920w, {B}assets/img/hero-d-2880.webp 2880w" sizes="100vw" width="2880" height="1620" alt="Illustrative scene: a faceted bottle of red lacquer with a chrome cap in a beam of light" fetchpriority="high"></picture>{ILL}</div>
 <div class="sweep" aria-hidden="true"></div>
-<div class="hero-inner"><p class="eyebrow">Nail art · 3324 W 6th St · Koreatown</p><h1 id="h1"><span>Red</span><em>Polish.</em></h1>
+<div class="hero-inner"><p class="eyebrow">Nail art · Koreatown, Los Angeles</p><h1 id="h1"><span>Red</span><em>Polish.</em></h1>
 <div class="hero-side"><p class="sub">Nail art in Koreatown. Pearls, chrome, cat-eye and hand-painted detail, booked on Fresha.</p>
 <div class="ctas">{bookbtn("Book on Fresha",place="hero")}{callbtn("btn btn-glass")}</div>
 </div>
