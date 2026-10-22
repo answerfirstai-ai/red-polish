@@ -1,55 +1,41 @@
 (()=>{const d=document,H=d.documentElement,RM=H.classList.contains('rm');
-const nav=d.querySelector('.nav'),mbar=d.querySelector('.mbar');
-const onS=()=>{const y=scrollY;nav.classList.toggle('scrolled',y>20);mbar&&mbar.classList.toggle('on',y>400)};addEventListener('scroll',onS,{passive:true});onS();
+const nav=d.querySelector('.nav'),mbar=d.querySelector('.mbar'),hero=d.querySelector('.hero');
+const onS=()=>{const y=scrollY;nav.classList.toggle('scrolled',y>20);mbar&&mbar.classList.toggle('on',y>(hero?hero.offsetHeight-80:300))};addEventListener('scroll',onS,{passive:true});onS();
+d.querySelectorAll('.mpanel a').forEach(a=>a.addEventListener('click',()=>a.closest('details').open=false));
 const toast=d.querySelector('.toast');let tt;function say(m){toast.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="#fff" stroke-width="2.5" d="M4 12l5 5L20 6"/></svg>'+m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('on'),2800)}
-d.querySelectorAll('[data-look]').forEach(a=>a.addEventListener('click',()=>{const t=a.dataset.look;try{navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>say('Look copied. Paste it in your booking note.'),()=>{})}catch(e){}}));
+d.querySelectorAll('[data-look]').forEach(a=>a.addEventListener('click',()=>{try{navigator.clipboard&&navigator.clipboard.writeText(a.dataset.look).then(()=>say('Look copied. Paste it in your booking note.'),()=>{})}catch(e){}}));
 d.querySelectorAll('.btn').forEach(b=>b.addEventListener('pointerdown',()=>{b.classList.remove('zip');void b.offsetWidth;b.classList.add('zip')}));
 if(matchMedia('(pointer:fine)').matches&&!RM)d.querySelectorAll('.look .ph').forEach(p=>p.addEventListener('pointermove',e=>{const r=p.getBoundingClientRect();p.style.setProperty('--mx',e.clientX-r.left+'px');p.style.setProperty('--my',e.clientY-r.top+'px')}));
-// gallery filter
-const fb=d.querySelectorAll('[data-filter]');if(fb.length){fb.forEach(b=>b.addEventListener('click',()=>{const f=b.dataset.filter;fb.forEach(x=>x.setAttribute('aria-pressed',x===b));const items=d.querySelectorAll('.look');
+const fb=d.querySelectorAll('[data-filter]');if(fb.length)fb.forEach(b=>b.addEventListener('click',()=>{const f=b.dataset.filter;fb.forEach(x=>x.setAttribute('aria-pressed',x===b));const items=d.querySelectorAll('.look');
  const st=window.Flip&&!RM?Flip.getState(items):null;items.forEach(i=>i.classList.toggle('hide',f!=='all'&&i.dataset.f!==f));
- if(st)Flip.from(st,{duration:.55,ease:'power2.inOut',stagger:.02,absolute:true,onEnter:e=>gsap.fromTo(e,{opacity:0,scale:.9},{opacity:1,scale:1,duration:.4}),onLeave:e=>gsap.to(e,{opacity:0,scale:.9,duration:.3})})}))}
-if(!window.gsap){H.classList.add('nojs');return}
+ if(st)Flip.from(st,{duration:.5,ease:'power2.inOut',stagger:.02,absolute:true,onEnter:e=>gsap.fromTo(e,{opacity:0,scale:.94},{opacity:1,scale:1,duration:.35}),onLeave:e=>gsap.to(e,{opacity:0,duration:.25})})}));
+// light sweep on rail cards as they come into view (native horizontal scroll)
+const rail=d.querySelector('.rail');if(rail&&!RM){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.6)e.target.classList.add('lit')}),{root:rail,threshold:[.6]});rail.querySelectorAll('.set').forEach(s=>io.observe(s))}
+if(RM||!window.gsap)return;
 gsap.registerPlugin(ScrollTrigger);window.Flip&&gsap.registerPlugin(Flip);
-if(RM){d.querySelector('.book')&&d.querySelector('.book').classList.add('red');return}
+const st=d.getElementById('stage');
 const mm=gsap.matchMedia();
-mm.add({isDesktop:'(min-width:821px)',isMobile:'(max-width:820px)',fine:'(pointer:fine)'},ctx=>{const {isDesktop,fine}=ctx.conditions;
- // hero: one coat
- const hero=d.querySelector('.hero');if(hero){const bp=hero.querySelector('.bpath'),L=bp.getTotalLength();
-  const h1=hero.querySelector('h1');h1.querySelectorAll('.ln').forEach(l=>{const em=l.querySelector('em'),tgt=em||l;tgt.innerHTML=[...tgt.textContent].map(c=>'<span class="ch">'+c+'</span>').join('')});
-  h1.setAttribute('aria-label','Red Polish.');
-  const k=isDesktop?1:.7,tl=gsap.timeline({defaults:{ease:'expo.out'}});
-  gsap.set(bp,{strokeDasharray:L,strokeDashoffset:L});
-  tl.from(nav,{opacity:0,duration:.3,ease:'power1.out'},0)
-   .to(bp,{strokeDashoffset:0,duration:.9*k,ease:'power4.inOut'},.15*k)
-   .fromTo(hero.querySelector('.shine'),{x:-300},{x:1900,duration:.7,ease:'power2.inOut'},.95*k)
-   .from(h1.querySelectorAll('.ch'),{yPercent:110,duration:.8,stagger:.035},.5*k)
-   .from(hero.querySelectorAll('.h-in'),{opacity:0,y:12,duration:.5,stagger:.06},1.0*k)
-   .fromTo(hero.querySelector('.js-fill'),{'--fill':'0%',color:'#B5121B'},{'--fill':'100%',color:'#fff',duration:.45,ease:'power3.out'},1.3*k)
-   .fromTo('#heroframe',{clipPath:'inset(14% 14% round 40px)'},{clipPath:'inset(0% 0% round 0px)',duration:.7,ease:'power3.out'},.2)
-   .add(()=>gloss(d.getElementById('heroframe')),1.1*k);
-  if(isDesktop)gsap.to('.stroke',{yPercent:-60,ease:'none',scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true}})}
- // ch1 pan
- const pan=d.querySelector('.pan'),track=pan&&pan.querySelector('.pan-track');if(track){
-  const dist=()=>track.scrollWidth-innerWidth;
-  const tw=gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:pan,pin:true,scrub:1,start:'top top',end:()=>'+='+dist(),invalidateOnRefresh:true,anticipatePin:1}});
-  track.querySelectorAll('.set').forEach(s=>{gsap.fromTo(s,{scale:.9},{scale:1,ease:'none',scrollTrigger:{trigger:s,containerAnimation:tw,start:'left right',end:'center center',scrub:true}});
-   const ph=s.querySelector('.ph');ScrollTrigger.create({trigger:s,containerAnimation:tw,start:'center 60%',onEnter:()=>gloss(ph),onEnterBack:()=>gloss(ph)})})}
- function gloss(el){el&&el.animate([{transform:'translateX(-130%) skewX(-12deg)'},{transform:'translateX(130%) skewX(-12deg)'}],{duration:800,easing:'cubic-bezier(.45,0,.55,1)',pseudoElement:'::after'})}
- // ch2 finishes
- const fin=d.querySelector('.finishes');if(fin){const lays=fin.querySelectorAll('.lay'),words=fin.querySelectorAll('.fin-words span'),copy=fin.querySelectorAll('.fin-copy p'),dots=fin.querySelectorAll('.fin-dots b');
-  const tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:fin,pin:true,start:'top top',end:'+=300%',scrub:.5,snap:{snapTo:1/3,duration:.4,ease:'power1.inOut'},onUpdate:s=>{n3&&n3.set(s.progress);dots.forEach((b,i)=>gsap.set(b,{scaleX:i<=Math.round(s.progress*3)?1:0}))}}});
-  for(let i=1;i<4;i++){tl.to(lays[i-1],{opacity:0,duration:.3},i-.3).to(lays[i],{opacity:1,duration:.3},i-.3).to(words[i-1],{opacity:0,y:-30,duration:.3},i-.3).fromTo(words[i],{opacity:0,y:30},{opacity:1,y:0,duration:.3},i-.3).to(copy[i-1],{opacity:0,duration:.2},i-.3).to(copy[i],{opacity:1,duration:.2},i-.15)}
-  tl.fromTo(fin.querySelectorAll('.pearl'),{y:-260},{y:0,ease:'bounce.out',stagger:.08,duration:.5},1.8);
-  tl.fromTo(fin.querySelector('.hl'),{x:-120},{x:420,duration:3},0);
-  gsap.to(fin.querySelector('.ce-band'),{y:60,repeat:-1,yoyo:true,duration:1.6,ease:'sine.inOut'});
-  let n3=null;const gl=(()=>{try{return !!d.createElement('canvas').getContext('webgl2')}catch(e){return false}})();
-  if(isDesktop&&fine&&gl){const io=new IntersectionObserver(e=>{if(e[0].isIntersecting){io.disconnect();import(d.querySelector('script[src*="app.js"]').src.replace('app.js','nail3d.js')).then(m=>{const host=d.getElementById('nail');n3=m.mount(host);host.classList.add('has3d')}).catch(()=>{})}},{rootMargin:'100% 0px'});io.observe(fin)}}
- // salon blinds
- d.querySelectorAll('.blind .bands').forEach(b=>gsap.to(b.children,{scaleY:0,duration:.7,stagger:.06,ease:'power3.inOut',scrollTrigger:{trigger:b,start:'top 80%',toggleActions:'play none none none'}}));
- // book flood
- const bk=d.querySelector('.book:not(.red)');if(bk){gsap.fromTo(bk,{'--flood':0},{'--flood':1,ease:'none',scrollTrigger:{trigger:bk,start:'top bottom',end:'top 60%',scrub:true,onUpdate:s=>bk.classList.toggle('red',s.progress>.55)}})}
- // spring fade-ups
- gsap.utils.toArray('.sec-head,.card,.menu section,.look,.page-hero .wrap>*').forEach(el=>gsap.from(el,{opacity:0,y:24,duration:.6,ease:'back.out(1.2)',scrollTrigger:{trigger:el,start:'top 92%',once:true}}));
+mm.add({desk:'(min-width:821px)',mob:'(max-width:820px)',fine:'(pointer:fine)'},ctx=>{const {desk,fine}=ctx.conditions;
+ if(hero){ // camera: slow push-in + light sweep. Text is never hidden.
+  gsap.fromTo('.poster',{scale:1.1},{scale:1,duration:2.8,ease:'power2.out'});
+  gsap.fromTo('.sweep',{xPercent:-100},{xPercent:100,duration:2.2,ease:'power2.inOut',delay:.6,repeat:-1,repeatDelay:7});
+  let ctl=null,prog=0;const pt=ScrollTrigger.create({trigger:hero,start:'top top',end:'bottom top',scrub:true,onUpdate:s=>{prog=s.progress;ctl&&ctl(prog)}});
+  gsap.to('.hero-inner',{yPercent:-12,ease:'none',scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:true}});
+  const gl=(()=>{try{return !!d.createElement('canvas').getContext('webgl2')}catch(e){return false}})();
+  const base=d.querySelector('script[src*="app.js"]').src.replace('js/app.js','');
+  const go=()=>{if(desk&&fine&&gl){import(base+'js/bottle3d.js').then(m=>m.mount(st,base+'img/studio-256.hdr')).then(b=>{ctl=v=>b.set(v);b.set(prog);st.classList.add('on');hero.classList.add('live')}).catch(()=>{})}
+   else{ // mobile: pre-rendered PBR sequence scrubbed by scroll
+    const im=st.querySelector('.seq'),N=24,ext=d.createElement('canvas').toDataURL('image/avif').indexOf('avif')>0?'avif':'webp',fr=[];
+    let ok=0;for(let i=0;i<N;i++){const x=new Image();x.decoding='async';x.onload=()=>{if(++ok===N){im.hidden=false;st.classList.add('on');hero.classList.add('live');ctl(prog)}};x.src=base+'seq/b'+String(i).padStart(2,'0')+'.'+ext;fr.push(x.src)}
+    let last=-1;ctl=v=>{const k=Math.round(v*(N-1));if(k!==last){last=k;im.src=fr[k]}}}};
+  ('requestIdleCallback' in window)?requestIdleCallback(go,{timeout:2500}):setTimeout(go,1200);
+ }
+ // rack focus into their real set (scroll-linked, no pin)
+ gsap.fromTo('.u-real img',{filter:'blur(12px)',scale:1.1},{filter:'blur(0px)',scale:1,ease:'none',scrollTrigger:{trigger:'.u-real',start:'top 95%',end:'top 35%',scrub:true}});
+ gsap.fromTo('.u-macro img',{scale:1.15},{scale:1,ease:'none',scrollTrigger:{trigger:'.u-macro',start:'top bottom',end:'bottom top',scrub:true}});
+ // layered parallax backgrounds
+ [['.mat',14],['.kt',18],['.book-bg',16],['.brushband img',30]].forEach(([s,a])=>d.querySelectorAll(s).forEach(el=>gsap.fromTo(el,{yPercent:-a/2},{yPercent:a/2,ease:'none',scrollTrigger:{trigger:el.parentElement,start:'top bottom',end:'bottom top',scrub:true}})));
+ gsap.fromTo('.s-photo img',{scale:1.12},{scale:1,ease:'none',scrollTrigger:{trigger:'.s-photo',start:'top bottom',end:'center 40%',scrub:true}});
+ if(desk)gsap.fromTo('.rail',{x:60},{x:0,ease:'none',scrollTrigger:{trigger:'.rail',start:'top bottom',end:'top 40%',scrub:true}});
 });
 })();
