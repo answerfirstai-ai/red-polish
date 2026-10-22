@@ -401,3 +401,4 @@ a[href^="tel:"]{white-space:nowrap}
 /* rev6 QA */
 .u-macro{position:relative}
 .look-btn{max-width:100%;white-space:nowrap;overflow:visible}
+.igcred{font-size:12px;margin:.6rem 0 0;opacity:.9}.igcred a{color:inherit;text-decoration:underline}

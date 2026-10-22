@@ -6,7 +6,10 @@ BOOK=FRESHA+'?utm_source=site'
 TEL='tel:+12133871777'; PHONE='(213) 387-1777'
 MAPS='https://www.google.com/maps/search/?api=1&query=Red+Polish+Nail+Salons+3324+W+6th+St+Los+Angeles+CA+90020'
 DIR='https://www.google.com/maps/dir/?api=1&destination=3324+W+6th+St+Suite+F+Los+Angeles+CA+90020'
-SETS=[(1,'Chrome & gold','chrome'),(5,'Cat-eye','chrome'),(2,'Pearl & nude','pearl'),(3,'Line art & hand-painted','line'),(4,'Colour','color'),(6,'Reds & deep nudes','color')]
+SETS=[(1,'Gold chrome & florals','chrome'),(5,'Silver chrome & abstract','chrome'),(2,'Mauve & white French','pearl'),(3,'Stars & hearts','line'),(4,'Yellow with red stars','color'),(6,'Burgundy short set','color')]
+SLD={int(k):v for k,v in __import__('json').load(open(__import__('os').path.join(__import__('os').path.dirname(__file__),'sl_dims.json'))).items()}
+IGP={1: 'DeAT-v-komt', 5: 'DexTwfBEn-q', 2: 'Dej5g3SG6nt', 3: 'Dee5WUoGNSX', 4: 'Dd4yecRhMlD', 6: 'DedYmLgGxHB'}
+IGCR='<p class="igcred">Photos: <a href="https://www.instagram.com/redpolish_la/" target="_blank" rel="noopener">@redpolish_la</a></p>'
 STAG='<span class="tag">Illustrative, not Red Polish\'s work</span>'
 FILT=[('all','All'),('chrome','Chrome & cat-eye'),('pearl','Pearl & nude'),('line','Line art & painted'),('color','Color')]
 I=lambda n:{'book':'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7Zm-2 8h14v10H5V10Z"/></svg>',
@@ -43,7 +46,7 @@ def page(path,title,desc,body,extra_ld=None,cur=''):
 <footer><div class="wrap"><div class="gloss-line" aria-hidden="true"></div><div><a class="wordmark" href="{B}"><i></i>Red Polish</a><p>Red Polish, 3324 W 6th St, Suite F, Los Angeles 90020. <a href="{TEL}">(213) 387-1777</a>.</p><p>{bookbtn("Book on Fresha","btn btn-white btn-sm","footer")}</p></div>
 <div><h2 class="fh">Visit</h2><address class="nap" style="font-size:.95rem;margin:0">Red Polish<br>3324 W 6th St, Suite F<br>Los Angeles, CA 90020<br><a href="{TEL}">{PHONE}</a></address><p><a href="{DIR}" target="_blank" rel="noopener">Get directions</a></p></div>
 <div><h2 class="fh">Hours</h2><p>Per Fresha: Mon 10-6, Tue 10-7, Wed-Sat 10-8, Sun 10-7. <a href="{TEL}">Call to confirm.</a></p></div>
-<p class="fine">All images are AI-generated stand-ins marked "Illustrative", not photos or work of Red Polish. Prices from Red Polish's Fresha menu (October 2026) and may change. Confirm at booking. © 2026 Red Polish.</p></div></footer>
+<p class="fine">Nail set photos: @redpolish_la on Instagram. Other images are AI-generated and marked "Illustrative". Prices from Red Polish's Fresha menu (October 2026) and may change. Confirm at booking. © 2026 Red Polish.</p></div></footer>
 <div class="mbar" aria-label="Quick actions">{bookbtn("Book","btn btn-primary btn-sm","mbar")}<a class="btn btn-ghost btn-sm" href="{TEL}">{I("call")}Call</a></div>
 <div class="toast" role="status" aria-live="polite"></div>
 <script src="{B}assets/js/gsap.min.js" defer></script><script src="{B}assets/js/ScrollTrigger.min.js" defer></script>{'<script src="'+B+'assets/js/Flip.min.js" defer></script>' if path=='gallery/' else ''}<script src="{B}assets/js/app.js" defer></script>
@@ -51,14 +54,14 @@ def page(path,title,desc,body,extra_ld=None,cur=''):
 EXTRA_HEAD={'':f'<link rel="preload" as="image" type="image/avif" media="(max-width:820px)" imagesrcset="{B}assets/img/hero-m-800.avif 800w, {B}assets/img/hero-m-1200.avif 1200w, {B}assets/img/hero-m-1600.avif 1600w" imagesizes="100vw" fetchpriority="high"><link rel="preload" as="image" type="image/avif" media="(min-width:821px)" imagesrcset="{B}assets/img/hero-d-960.avif 960w, {B}assets/img/hero-d-1280.avif 1280w, {B}assets/img/hero-d-1920.avif 1920w, {B}assets/img/hero-d-2880.avif 2880w" imagesizes="100vw" fetchpriority="high">'}
 def img(i,alt,sizes,cls='',lazy=True,w=1200):
   ss=lambda e:", ".join(f"{B}assets/img/sl-{i}-{x}.{e} {x}w" for x in ((640,1024,1600,2048) if __import__("os").path.exists(f"{R}assets/img/sl-{i}-2048.webp") else (640,1024)))
-  return f'<picture><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}"><img src="{B}assets/img/sl-{i}-1024.webp" srcset="{ss("webp")}" sizes="{sizes}" width="1024" height="{576 if i==6 else 768}" alt="{html.escape(alt)}"{" loading=\"lazy\" decoding=\"async\"" if lazy else " fetchpriority=\"high\""}{" class=\""+cls+"\"" if cls else ""}></picture>'
-def salt(t): return f"Illustrative stand-in, not Red Polish's work: AI still life of polish bottles and colour swatches for {t.lower()}"
+  return f'<picture><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}"><img src="{B}assets/img/sl-{i}-1024.webp" srcset="{ss("webp")}" sizes="{sizes}" width="1024" height="{SLD[i]}" alt="{html.escape(alt)}"{" loading=\"lazy\" decoding=\"async\"" if lazy else " fetchpriority=\"high\""}{" class=\""+cls+"\"" if cls else ""}></picture>'
+def salt(t): return f"{t} nail set by Red Polish, from @redpolish_la on Instagram"
 SV={s['name']:s for s in C['services']}
 def svc(n): return SV[n]
 FEAT=[('Gel Manicure','from $50','Gel polish manicure'),('Gel Manicure Design','from $51','Gel manicure with nail art'),('Gel Pedicure','from $60','Gel polish pedicure'),('Regular Pedicure','from $40','Classic pedicure'),('Add-ons','$5 / from $10','Extras added to a service'),('GelX','See Fresha','Listed on Fresha. Price on the booking page')]
 def short(n): return n.split(' (')[0] if n.startswith('Gel X (') or 'Combo' in n else n
 cards=''
-tray=''.join(f'<figure class="set{" lead" if k==0 else ""}"><div class="ph">{img(i,salt(t),"(max-width:820px) 80vw, 60vw" if k==0 else "(max-width:820px) 64vw, 380px")}{STAG}</div><figcaption><b>Your {t[0].lower()+t[1:]} sets go here</b></figcaption></figure>' for k,(i,t,f) in enumerate(SETS))
+tray=''.join(f'<figure class="set{" lead" if k==0 else ""}"><div class="ph">{img(i,salt(t),"(max-width:820px) 80vw, 60vw" if k==0 else "(max-width:820px) 64vw, 380px")}</div><figcaption><b>{t}</b></figcaption></figure>' for k,(i,t,f) in enumerate(SETS))
 NAIL='''<svg viewBox="0 0 200 320" role="img" aria-label="Illustrated almond nail changing finish"><defs>
 <clipPath id="nc"><path d="M100 8C150 8 182 60 182 140v120c0 32-22 52-82 52s-82-20-82-52V140C18 60 50 8 100 8Z"/></clipPath>
 <linearGradient id="gch" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6f9"/><stop offset=".35" stop-color="#9aa1ad"/><stop offset=".5" stop-color="#ffffff"/><stop offset=".7" stop-color="#7b828e"/><stop offset="1" stop-color="#dfe3e9"/></linearGradient>
@@ -84,8 +87,8 @@ home=f"""<section class="hero" aria-labelledby="h1"><div class="hero-media"><pic
 <section class="uncap" id="bead" aria-labelledby="bead-h"><div class="u-grid">
 <div class="u-copy"><h2 id="bead-h">Gel manicures <em>from $50</em></h2><p>From prices on Red Polish's Fresha menu, October 2026.</p>{bookbtn("Book on Fresha","btn btn-primary btn-sm","bead")}
 <figure class="u-macro">{pic("ai-2-brush","Illustrative scene. Not a photo of Red Polish. A nail polish brush with a bead of red lacquer.","(max-width:820px) 60vw, 26vw",w=768,h=768)}<span class="tag">Illustrative, not Red Polish's work</span></figure></div>
-<figure class="u-real"><div class="focus">{img(1,salt("chrome and gold"),"(max-width:820px) 100vw, 58vw")}{STAG}</div><figcaption>Your real sets, shot like this, once you send photos.</figcaption></figure></div></section>
-<section class="sets" id="sets" aria-labelledby="sets-h"><div class="sets-head"><h2 id="sets-h">Your sets <em>go here</em></h2><p>Your real sets, shot like this, once you send photos. Until then these are labeled still lifes. Bring a photo of the look you want.</p></div>
+<figure class="u-real"><div class="focus">{img(1,salt("Gold chrome & florals"),"(max-width:820px) 100vw, 58vw")}</div><figcaption>Photos: <a href="https://www.instagram.com/redpolish_la/p/DeAT-v-komt/" target="_blank" rel="noopener">@redpolish_la</a></figcaption></figure></div></section>
+<section class="sets" id="sets" aria-labelledby="sets-h"><div class="sets-head"><h2 id="sets-h">Recent <em>sets</em></h2><p>Real sets from Red Polish's Instagram. Bring a photo of the look you want.</p>{IGCR}</div>
 <div class="rail tray" tabindex="0" role="region" aria-label="Nail sets">{tray}</div></section>
 <section class="prices" id="prices" aria-labelledby="pr-h"><div class="spec"><div class="spec-head"><h2 id="pr-h">Prices on <em>Fresha</em></h2><p>"From" prices on Red Polish's Fresha menu, October 2026. Prices may change.</p></div>
 <dl class="spec-list">{''.join(f'<div><dt>{html.escape(n)}</dt><dd>{"Listed, price on Fresha" if n=="GelX" else pr}</dd></div>' for n,pr,d in FEAT)}</dl>
@@ -95,9 +98,9 @@ home=f"""<section class="hero" aria-labelledby="h1"><div class="hero-media"><pic
 <div class="s-copy"><h2 id="salon-h">3324 W 6th St, <em>Suite F</em></h2><address class="nap">Los Angeles, CA 90020<br>Koreatown</address>
 <p>Hours per Fresha: Mon 10-6, Tue 10-7, Wed-Sat 10-8, Sun 10-7. <a href="{TEL}">Call to confirm.</a></p><p><span class="need">[NEED: parking details]</span></p><div class="ctas">{dirbtn("btn btn-glass")}{callbtn("btn btn-glass")}</div></div></div></section>
 <section class="book" id="book" aria-labelledby="book-h"><div class="b-inner"><h2 id="book-h">Book on <em>Fresha</em></h2><div><p>Bring a photo of the set you want, or call the salon.</p><div class="ctas">{bookbtn("Book on Fresha","btn btn-white","book")}{callbtn("btn btn-glass")}</div></div></div></section>"""
-looks=''.join(f'<figure class="look" data-f="{f}" data-flip-id="l{i}"><div class="ph">{img(i,salt(t),"(max-width:560px) 92vw, (max-width:900px) 46vw, 380px")}{STAG}</div><figcaption><div><b>Your {t[0].lower()+t[1:]} sets go here</b></div><a class="btn btn-primary btn-sm look-btn" href="{BOOK}&amp;utm_content=look-{i}" target="_blank" rel="noopener" data-look="Red Polish look: {t}">Book this look<span class="sr">: {t} (opens Fresha, copies the look name)</span></a></figcaption></figure>' for i,t,f in SETS)
+looks=''.join(f'<figure class="look" data-f="{f}" data-flip-id="l{i}"><div class="ph">{img(i,salt(t),"(max-width:560px) 92vw, (max-width:900px) 46vw, 380px")}</div><figcaption><div><b>{t}</b></div><a class="btn btn-primary btn-sm look-btn" href="{BOOK}&amp;utm_content=look-{i}" target="_blank" rel="noopener" data-look="Red Polish look: {t}">Book this look<span class="sr">: {t} (opens Fresha, copies the look name)</span></a></figcaption></figure>' for i,t,f in SETS)
 filt=''.join(f'<button type="button" data-filter="{k}" aria-pressed="{"true" if k=="all" else "false"}">{v}</button>' for k,v in FILT)
-gallery=f'''<section class="page-hero"><div class="wrap"><p class="eyebrow">Nail art gallery</p><h1>Pick a <em>look.</em></h1><p>Your sets go here. These slots hold illustrative still lifes, not Red Polish's work, until the salon shares its own photos. Tap a button and we copy the look name so you can paste it in your Fresha booking note.</p><div class="filters" role="group" aria-label="Filter by finish">{filt}</div></div></section>
+gallery=f'''<section class="page-hero"><div class="wrap"><p class="eyebrow">Nail art gallery</p><h1>Pick a <em>look.</em></h1>{IGCR}<p>Real sets from Red Polish's Instagram. Tap a button and we copy the look name so you can paste it in your Fresha booking note.</p><div class="filters" role="group" aria-label="Filter by finish">{filt}</div></div></section>
 <section><div class="wrap"><div class="masonry">{looks}</div></div></section>
 <section class="book red" style="--flood:1"><div class="wrap"><h2>Don't see <em>your idea?</em></h2><p>Bring a photo. Book on Fresha or call the salon.</p><div class="ctas">{bookbtn(place="gallery-end").replace("btn btn-primary","btn btn-white")}{callbtn()}</div></div></section>'''
 rows=''.join(f'<li><span class="pn">{html.escape(n)}</span><span class="pd">{d}</span><span class="pp">{pr}</span></li>' for n,pr,d in FEAT)
