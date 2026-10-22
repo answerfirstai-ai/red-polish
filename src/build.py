@@ -50,7 +50,7 @@ def page(path,title,desc,body,extra_ld=None,cur=''):
 </body></html>'''
 EXTRA_HEAD={'':f'<link rel="preload" as="image" type="image/avif" media="(max-width:820px)" imagesrcset="{B}assets/img/hero-m-800.avif 800w, {B}assets/img/hero-m-1200.avif 1200w, {B}assets/img/hero-m-1600.avif 1600w" imagesizes="100vw" fetchpriority="high"><link rel="preload" as="image" type="image/avif" media="(min-width:821px)" imagesrcset="{B}assets/img/hero-d-960.avif 960w, {B}assets/img/hero-d-1280.avif 1280w, {B}assets/img/hero-d-1920.avif 1920w, {B}assets/img/hero-d-2880.avif 2880w" imagesizes="100vw" fetchpriority="high">'}
 def img(i,alt,sizes,cls='',lazy=True,w=1200):
-  ss=lambda e:", ".join(f"{B}assets/img/sl-{i}-{x}.{e} {x}w" for x in (640,1024,1600,2048))
+  ss=lambda e:", ".join(f"{B}assets/img/sl-{i}-{x}.{e} {x}w" for x in ((640,1024,1600,2048) if __import__("os").path.exists(f"{R}assets/img/sl-{i}-2048.webp") else (640,1024)))
   return f'<picture><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}"><img src="{B}assets/img/sl-{i}-1024.webp" srcset="{ss("webp")}" sizes="{sizes}" width="1024" height="{576 if i==6 else 768}" alt="{html.escape(alt)}"{" loading=\"lazy\" decoding=\"async\"" if lazy else " fetchpriority=\"high\""}{" class=\""+cls+"\"" if cls else ""}></picture>'
 def salt(t): return f"Illustrative stand-in, not Red Polish's work: AI still life of polish bottles and colour swatches for {t.lower()}"
 SV={s['name']:s for s in C['services']}
